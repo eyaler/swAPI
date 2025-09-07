@@ -13,6 +13,7 @@ let targetBox
 let animationProgress
 let animationFinish
 let isAnimating
+let maxDigits
 let values
 let pairs
 
@@ -70,7 +71,7 @@ function drawBox(box) {
 
 	noStroke()
 	fill('white')
-	textSize(min(30, boxWidth() * width * 0.8))
+	textSize(min(30, boxWidth() * width * 0.8 * 2 / maxDigits))
 	textAlign(CENTER, CENTER)
 	text(box.value, (box.x+boxWidth()/2) * width, (box.y+boxHeight/2) * height)
 }
@@ -101,6 +102,7 @@ function setupBoxes(numbers) {
 	values = [...numbers]
 	pairs = []
 	boxes = []
+	maxDigits = Math.log10(Math.max(...values, 10))
 	boxHeight = min(boxHeightFrac, minBoxHeight / height)
 	for (let i = 0; i < values.length; i++) {
 		boxes.push({value: values[i]})
