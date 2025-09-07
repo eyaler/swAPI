@@ -1,4 +1,4 @@
-const marginFrac = .5
+const marginFrac = 0.5
 const rowHeight = 0.5
 const minBoxHeight = 80
 const boxHeightFrac = 0.15
@@ -23,11 +23,10 @@ function boxWidth() {
 function drawBoxes() {
 	background(240)
 	animatePair()
-	for (let i = 0; i < boxes.length; i++) {
-		textSize(20)
-		fill('black')
-		text(i, boxWidth() * (marginFrac+.5+i*(1+marginFrac)) * width, (rowHeight+boxHeight/2)*height + indexDeltaY)
-	}
+	textSize(20)
+	fill('black')
+	for (let i = 0; i < boxes.length; i++)
+		text(i, boxWidth() * (marginFrac+0.5+i*(1+marginFrac)) * width, (rowHeight+boxHeight/2)*height + indexDeltaY)
 	for (let i = 0; i < boxes.length; i++)
 		drawBox(boxes[i])
 
@@ -99,24 +98,14 @@ function animatePair() {
 
 function setupBoxes(numbers) {
 	textAlign(CENTER, CENTER)
-	if (numbers?.length) {
-		values = [...numbers]
-		pairs = []
-		boxes = []
-	}
+	values = [...numbers]
+	pairs = []
+	boxes = []
 	boxHeight = min(boxHeightFrac, minBoxHeight / height)
-	if (values) {
-		
-		for (let i = 0; i < values.length; i++) {
-			if (numbers?.length)
-				boxes.push({value: values[i]})
-			boxes[i].lastX = boxWidth() * (marginFrac+i*(1+marginFrac))
-			boxes[i].lastY = rowHeight - boxHeight/2
-			if (numbers?.length) {
-				boxes[i].x = boxes[i].lastX
-				boxes[i].y = boxes[i].lastY
-			}
-		}
+	for (let i = 0; i < values.length; i++) {
+		boxes.push({value: values[i]})
+		boxes[i].x = boxes[i].lastX = boxWidth() * (marginFrac+i*(1+marginFrac))
+		boxes[i].y = boxes[i].lastY = rowHeight - boxHeight/2
 	}
 }
 
