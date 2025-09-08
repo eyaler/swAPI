@@ -99,6 +99,8 @@ function animatePair() {
 
 function setupBoxes(numbers) {
 	textAlign(CENTER, CENTER)
+	if (numbers == null)
+		throw Error('Error: You forgot to pass an array to setupBoxes()')
 	values = [...numbers]
 	pairs = []
 	boxes = []
@@ -112,5 +114,7 @@ function setupBoxes(numbers) {
 }
 
 function animateBoxes(i, j, swap=true) {
+	if (i == null || j == null)
+		throw Error('Error: You forgot to pass two indices to animateBoxes()')
 	pairs.push([i, j, swap])
 }
