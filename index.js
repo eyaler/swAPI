@@ -102,7 +102,7 @@ function setupBoxes(numbers) {
 	values = [...numbers]
 	pairs = []
 	boxes = []
-	maxDigits = Math.log10(Math.max(...values, 10))
+	maxDigits = max(2, ...values.map(i => i.toString().length))
 	boxHeight = min(boxHeightFrac, minBoxHeight / height)
 	for (let i = 0; i < values.length; i++) {
 		boxes.push({value: values[i]})
