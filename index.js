@@ -10,12 +10,13 @@ let boxHeight
 let boxes
 let draggingBox
 let targetBox
+let tempBox
 let animationProgress
 let animationFinish
 let isAnimating
 let maxDigits
 let values
-let pairs
+let queue
 
 function boxWidth() {
 	return 1 / ((values.length+2*marginFrac)+(values.length-1)*marginFrac)
@@ -23,7 +24,28 @@ function boxWidth() {
 
 function drawBoxes() {
 	background(240)
-	animatePair()
+	
+	if (!isAnimating && queue.length) {
+		const [i, j, kOrSwap] = queue.shift()
+		isAnimating = true
+		animationProgress = -1
+		animationFinish = +(kOrSwap === true)
+		draggingBox = boxes[i]
+		targetBox = boxes[j]
+		tempBox = null
+		if (kOrSwap) {
+			const saveX = targetBox.lastX
+			const saveY = targetBox.lastY
+			targetBox.lastX = draggingBox.lastX
+			targetBox.lastY = draggingBox.lastY
+			draggingBox.lastX = saveX
+			draggingBox.lastY = saveY
+			;[boxes[i], boxes[j]] = [boxes[j], boxes[i]]
+			;[values[i], values[j]] = [values[j], values[i]]
+		} else if (kOrSwap !== false)
+			tempBox = boxes[kOrSwap]
+	}
+	
 	textSize(20)
 	fill('black')
 	for (let i = 0; i < boxes.length; i++)
@@ -50,6 +72,7 @@ function drawBoxes() {
 		if (!isAnimating) {
 			targetBox = null
 			draggingBox = null
+			tempBox = null
 		}
 	}
 }
@@ -63,6 +86,8 @@ function drawBox(box) {
 	  fill(150, 250, 100)
 	else if (box == targetBox)
 	  fill(250, 100, 150)
+	else if (box == tempBox)
+		fill(250, 100, 250)
 	else
 	  fill(100, 150, 250)
 	stroke('black')
@@ -76,33 +101,12 @@ function drawBox(box) {
 	text(box.value, (box.x+boxWidth()/2) * width, (box.y+boxHeight/2) * height)
 }
 
-function animatePair() {
-	if (isAnimating || !pairs.length)
-		return
-	const [i, j, swap] = pairs.shift()
-	isAnimating = true
-	animationProgress = -1
-	animationFinish = +swap
-	draggingBox = boxes[i]
-	targetBox = boxes[j]
-	if (!swap)
-		return
-	const saveX = targetBox.lastX
-	const saveY = targetBox.lastY
-	targetBox.lastX = draggingBox.lastX
-	targetBox.lastY = draggingBox.lastY
-	draggingBox.lastX = saveX
-	draggingBox.lastY = saveY
-	;[boxes[i], boxes[j]] = [boxes[j], boxes[i]]
-	;[values[i], values[j]] = [values[j], values[i]]
-}
-
 function setupBoxes(numbers) {
 	textAlign(CENTER, CENTER)
 	if (numbers == null)
 		throw Error('You forgot to pass an array to setupBoxes()')
 	values = [...numbers]
-	pairs = []
+	queue = []
 	boxes = []
 	maxDigits = max(2, ...values.map(i => i.toString().length))
 	boxHeight = min(boxHeightFrac, minBoxHeight / height)
@@ -113,8 +117,8 @@ function setupBoxes(numbers) {
 	}
 }
 
-function animateBoxes(i, j, swap=true) {
+function animateBoxes(i, j, kOrSwap=true) {
 	if (i == null || j == null)
 		throw Error('You forgot to pass two indices to animateBoxes()')
-	pairs.push([i, j, swap])
+	queue.push([i, j, kOrSwap])
 }
