@@ -8,13 +8,13 @@ There are two functions to use in `setup()`: `setupBoxes(myArray)`, `animateBoxe
 and add `drawBoxes()` to `draw()`
 
 
-|`kOrMode` can take values:|                         |
-|--------------------------|-------------------------|
-|`false`                   |Highlight box i and box j|
-|`k` (index)               |Also highlight box k     |
-|`null`, `true` or `'swap'`|Swap box i and box j     |
-|`'after'`                 |Insert box j after box i |
-|`'before'` or `'insert'`  |Insert box j before box i|
+|`kOrMode` can take values: |                         |
+|---------------------------|-------------------------|
+|`false`                    |Highlight box i and box j|
+|`k` (index)                |Also highlight box k     |
+|`true`, `'swap'` or missing|Swap box i and box j     |
+|`'after'`                  |Insert box j after box i |
+|`'before'` or `'insert'`   |Insert box j before box i|
 
 
 ## Usage examples:
@@ -35,7 +35,7 @@ function setup() {
 					;[numbers[i], numbers[i + 1]] = [numbers[i + 1], numbers[i]]
 					lastSwap = i
 				}
-				animateBoxes(i, i + 1, 'swapped')
+				animateBoxes(i, i + 1, swapped)
 			}
 		}
 	} else if (algo == 'selection') {  // Demonstrate highlighting three boxes and swapping two
