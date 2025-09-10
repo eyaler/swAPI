@@ -74,7 +74,6 @@ function setup() {
 	} else if (algo == 'insertion') {  // Demonstrate highlighting two boxes and inserting the second box before the first
 		for (let i = 1; i < numbers.length; i++) {
 			const current = numbers[i]
-			animateBoxes(i, i, false)
 			for (j = i; j && numbers[j - 1] > current; j--) {
 				numbers[j] = numbers[j - 1]
 				animateBoxes(j - 1, i, false)
