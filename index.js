@@ -42,9 +42,10 @@ function drawBoxes() {
 			draggingBox.lastY = saveY
 			;[boxes[i], boxes[j]] = [boxes[j], boxes[i]]
 			;[values[i], values[j]] = [values[j], values[i]]
-		} else if (kOrSwap !== false)
+		} else if (kOrSwap !== false) {
 			animationFinish = 0
 			tempBox = boxes[kOrSwap]
+		}
 	}
 	
 	textSize(20)
