@@ -29,11 +29,12 @@ function drawBoxes() {
 		const [i, j, kOrSwap] = queue.shift()
 		isAnimating = true
 		animationProgress = -1
+		animationFinish = 0
+		tempBox = null
 		draggingBox = boxes[i]
 		targetBox = boxes[j]
 		if (kOrSwap === true) {
 			animationFinish = 1
-			tempBox = null
 			const saveX = targetBox.lastX
 			const saveY = targetBox.lastY
 			targetBox.lastX = draggingBox.lastX
@@ -42,10 +43,8 @@ function drawBoxes() {
 			draggingBox.lastY = saveY
 			;[boxes[i], boxes[j]] = [boxes[j], boxes[i]]
 			;[values[i], values[j]] = [values[j], values[i]]
-		} else if (kOrSwap !== false) {
-			animationFinish = 0
+		} else if (kOrSwap !== false)
 			tempBox = boxes[kOrSwap]
-		}
 	}
 	
 	textSize(20)
