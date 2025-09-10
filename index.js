@@ -64,7 +64,7 @@ function drawBoxes() {
 	const w = boxWidth()
 	for (let i = 0; i < boxes.length; i++)
 		text(i, w * (marginFrac+0.5+i*(1+marginFrac)) * width, (rowHeight+boxHeight/2)*height + indexDeltaY)
-	for (let i = 0; i < boxes.length; i++)
+	for (let i = boxes.length - 1; i >= 0; i--)
 		drawBox(boxes[i])
 
 	if (isAnimating) {
