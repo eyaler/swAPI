@@ -23,6 +23,8 @@ function boxWidth() {
 }
 
 function drawBoxes() {
+	if (!values)
+		return
 	background(240)
 	
 	if (!isAnimating && queue.length) {
