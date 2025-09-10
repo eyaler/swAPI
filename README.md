@@ -10,11 +10,11 @@ and add `drawBoxes()` to `draw()`
 
 |`kOrMode` can take values:|                         |
 |--------------------------|-------------------------|
-|`false`									 |Highlight box i and box j|
-|`k` (index)							 |Also highlight box k     |
+|`false`                   |Highlight box i and box j|
+|`k` (index)               |Also highlight box k     |
 |`null`, `true` or `'swap'`|Swap box i and box j     |
-|`'after'`							   |Insert box j after box i |
-|`'before'` or `'insert'`	 |Insert box j before box i|
+|`'after'`                 |Insert box j after box i |
+|`'before'` or `'insert'`  |Insert box j before box i|
 
 
 ## Usage examples:
@@ -74,11 +74,13 @@ function setup() {
 	} else if (algo == 'insertion') {  // Demonstrate highlighting two boxes and inserting the second box before the first
 		for (let i = 1; i < numbers.length; i++) {
 			const current = numbers[i]
-			let j
+			animateBoxes(i, i, false)
 			for (j = i; j && numbers[j - 1] > current; j--) {
 				numbers[j] = numbers[j - 1]
-				animateBoxes(j, i, false)
+				animateBoxes(j - 1, i, false)
 			}
+			if (j)
+				animateBoxes(j - 1, i, false)
 			if (i > j) {
 				numbers[j] = current
 				animateBoxes(j, i, 'before')
