@@ -48,7 +48,7 @@ function drawBoxes() {
 			if (kOrMode === true || kOrMode.toLowerCase() == 'swap') {
 				;[boxes[i], boxes[j]] = [boxes[j], boxes[i]]
 				;[values[i], values[j]] = [values[j], values[i]]
-			} else if (i != j) {
+			} else if (['after', 'before', 'insert'].includes(kOrMode.toLowerCase()) && i != j) {
 				boxes.splice(j, 1)
 				const newI = boxes.indexOf(firstBox) + (kOrMode.toLowerCase() == 'after')
 				boxes.splice(newI, 0, secondBox)
