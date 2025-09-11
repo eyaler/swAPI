@@ -30,7 +30,7 @@ function drawBoxes() {
 	textAlign(CENTER, CENTER)
 	
 	if (!isAnimating && queue.length) {
-		let [i, j, kOrMode] = queue.shift()
+		const [i, j, kOrMode] = queue.shift()
 		isAnimating = true
 		animationProgress = -1
 		animationFinish = 0
