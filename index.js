@@ -30,7 +30,7 @@ function drawBoxes() {
 	textAlign(CENTER, CENTER)
 	
 	if (!isAnimating && queue.length) {
-		const [i, j, kOrMode] = queue.shift()
+		let [i, j, kOrMode] = queue.shift()
 		isAnimating = true
 		animationProgress = -1
 		animationFinish = 0
@@ -45,12 +45,12 @@ function drawBoxes() {
 			secondBox.lastY = firstBox.lastY
 			firstBox.lastX = saveX
 			firstBox.lastY = saveY	
-			if (kOrMode === true || kOrMode.toLowerCase() == 'swap') {
+			if (kOrMode === true || kOrMode == 'swap') {
 				;[boxes[i], boxes[j]] = [boxes[j], boxes[i]]
 				;[values[i], values[j]] = [values[j], values[i]]
-			} else if (['after', 'before', 'insert'].includes(kOrMode.toLowerCase()) && i != j) {
+			} else if (['after', 'before', 'insert'].includes(kOrMode) && i != j) {
 				boxes.splice(j, 1)
-				const newI = boxes.indexOf(firstBox) + (kOrMode.toLowerCase() == 'after')
+				const newI = boxes.indexOf(firstBox) + (kOrMode == 'after')
 				boxes.splice(newI, 0, secondBox)
 				values.splice(newI, 0, values.splice(j, 1)[0])
 				firstBox.passive = true
@@ -145,5 +145,7 @@ function setupBoxes(numbers) {
 function animateBoxes(i, j, kOrMode=true) {
 	if (i == null || j == null)
 		throw Error('You forgot to pass at least two indices to animateBoxes()')
+	if (typeof kOrMode == 'string')
+		kOrMode = kOrMode.toLowerCase()
 	queue.push([i, j, kOrMode])
 }
