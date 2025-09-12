@@ -1,14 +1,18 @@
+'use strict'
+
 const marginFrac = 0.5
 const rowHeight = 0.5
-const minBoxHeight = 80
-const boxHeightFrac = 0.15
-const boxHeightJumpFactor = 1.3
+const maxBoxHeight = 80
+const maxBoxHeightFrac = 0.15
+const boxHeightJumpFactor = 1.5
 const indexDeltaY = 35
 const animationRate = 0.01
 const delayRate = 0.01
+const initialDelay = 1
 const realignWeight = 0.99
 const fgColors = ['white', 'black', 'red', 'orange', 'silver']
-const bgColors = [[100, 150, 250], [250, 100, 150], [150, 250, 100], [250, 100, 250]]
+const bgColors = [[100, 150, 250], [150, 250, 100], [250, 100, 150], [250, 100, 250]]
+let boxWidth
 let boxHeight
 let boxes
 let firstBox
@@ -21,17 +25,13 @@ let maxDigits
 let values
 let queue
 
-function boxWidth() {
-	return 1 / ((values.length+2*marginFrac)+(values.length-1)*marginFrac)
-}
-
 function drawBoxes() {
 	if (!values)
 		return
 	background(240)
 	textAlign(CENTER, CENTER)
 	
-	if (!isAnimating && queue.length) {
+	if (queue.length && !isAnimating && frameCount > 1 / delayRate | 0) {
 		const [i, j, kOrMode] = queue.shift()
 		isAnimating = true
 		animationProgress = -1
@@ -63,9 +63,8 @@ function drawBoxes() {
 	
 	textSize(20)
 	fill('black')
-	const w = boxWidth()
 	for (let i = 0; i < boxes.length; i++)
-		text(i, w * (marginFrac+0.5+i*(1+marginFrac)) * width, (rowHeight+boxHeight/2)*height + indexDeltaY)
+		text(i, boxWidth * (marginFrac+0.5+i*(1+marginFrac)) * width, (rowHeight+boxHeight/2)*height + indexDeltaY)
 	for (let i = boxes.length - 1; i >= 0; i--)
 		drawBox(boxes[i])
 
@@ -89,14 +88,14 @@ function drawBoxes() {
 		secondBox.y = sin(angle)*boxHeight*boxHeightJumpFactor*(centerY <= rowHeight ? -1 : 1) + firstBox.lastY + animationProgress*(secondBox.lastY-firstBox.lastY)
 		boxes.forEach((box, i) => {
 			if ((box != firstBox || firstBox.passive) && box != secondBox)
-				box.x = box.x + (w*(marginFrac+i*(1+marginFrac))-box.x)*(1-0.01**animationRate)
+				box.x = box.x + (boxWidth*(marginFrac+i*(1+marginFrac))-box.x)*(1-0.01**animationRate)
 		})
 		if (!isAnimating) {
-			firstBox.passive = false
+		  firstBox.passive = false
 			secondBox = null
 			firstBox = null
 			thirdBox = null
-			for (let i = 0; i < values.length; i++)
+			for (let i = 0; i < boxes.length; i++)
 				boxes[i].lastX = boxes[i].x
 		}
 	}
@@ -105,7 +104,7 @@ function drawBoxes() {
 function drawBox(box) {
 	const xw = box.x * width
 	const yh = box.y * height
-	const ww = boxWidth() * width
+	const ww = boxWidth * width
 	const hh = boxHeight * height
 	
 	noStroke()
@@ -138,12 +137,13 @@ function setupBoxes(numbers) {
 	boxes = []
 	const counter = {}
 	maxDigits = max(2, ...values.map(i => i.toString().length))
-	boxHeight = min(boxHeightFrac, minBoxHeight / height)
+	boxWidth = 1 / ((values.length+2*marginFrac)+(values.length-1)*marginFrac)
+	boxHeight = min(maxBoxHeightFrac, maxBoxHeight / height)
 	values.forEach((val, i) => {
 		boxes.push({value: val})
 		counter[val] = counter[val] + 1 || 0
 		boxes[i].color = fgColors[counter[val] % fgColors.length]
-		boxes[i].x = boxes[i].lastX = boxWidth() * (marginFrac+i*(1+marginFrac))
+		boxes[i].x = boxes[i].lastX = boxWidth * (marginFrac+i*(1+marginFrac))
 		boxes[i].y = boxes[i].lastY = rowHeight - boxHeight/2
 	})
 }
