@@ -7,6 +7,8 @@ const indexDeltaY = 35
 const animationRate = 0.01
 const delayRate = 0.01
 const realignWeight = 0.99
+const fgColors = ['white', 'black', 'silver']
+const bgColors = [[100, 150, 250], [250, 100, 150], [150, 250, 100], [250, 100, 250]]
 let boxHeight
 let boxes
 let firstBox
@@ -85,9 +87,10 @@ function drawBoxes() {
 		}
 		secondBox.x = centerX + cos(angle)*(firstBox.lastX-centerX)
 		secondBox.y = sin(angle)*boxHeight*boxHeightJumpFactor*(centerY <= rowHeight ? -1 : 1) + firstBox.lastY + animationProgress*(secondBox.lastY-firstBox.lastY)
-		for (let i = 0; i < values.length; i++)
-			if ((boxes[i] != firstBox || firstBox.passive) && boxes[i] != secondBox)
-				boxes[i].x = boxes[i].x + (w*(marginFrac+i*(1+marginFrac))-boxes[i].x)*(1-0.01**animationRate)
+		boxes.forEach((box, i) => {
+			if ((box != firstBox || firstBox.passive) && box != secondBox)
+				box.x = box.x + (w*(marginFrac+i*(1+marginFrac))-box.x)*(1-0.01**animationRate)
+		})
 		if (!isAnimating) {
 			firstBox.passive = false
 			secondBox = null
@@ -110,19 +113,19 @@ function drawBox(box) {
 	rect(xw + 5, yh + 5, ww, hh, 10)
 	
 	if (box == firstBox)
-	  fill(150, 250, 100)
+	  fill(bgColors[1])
 	else if (box == secondBox)
-	  fill(250, 100, 150)
+	  fill(bgColors[2])
 	else if (box == thirdBox)
-		fill(250, 100, 250)
+		fill(bgColors[3])
 	else
-	  fill(100, 150, 250)
+	  fill(bgColors[0])
 	stroke('black')
 	strokeWeight(2)
 	rect(xw, yh, ww, hh, 10)
 
 	noStroke()
-	fill('white')
+	fill(box.color)
 	textSize(min(30, ww * 0.8 * 2 / maxDigits))
 	text(box.value, xw + ww/2, yh + hh/2)
 }
@@ -133,13 +136,16 @@ function setupBoxes(numbers) {
 	values = [...numbers]
 	queue = []
 	boxes = []
+	const counter = {}
 	maxDigits = max(2, ...values.map(i => i.toString().length))
 	boxHeight = min(boxHeightFrac, minBoxHeight / height)
-	for (let i = 0; i < values.length; i++) {
-		boxes.push({value: values[i]})
+	values.forEach((val, i) => {
+		boxes.push({value: val})
+		counter[val] = counter[val] + 1 || 0
+		boxes[i].color = fgColors[counter[val] % fgColors.length]
 		boxes[i].x = boxes[i].lastX = boxWidth() * (marginFrac+i*(1+marginFrac))
 		boxes[i].y = boxes[i].lastY = rowHeight - boxHeight/2
-	}
+	})
 }
 
 function animateBoxes(i, j, kOrMode=true) {
