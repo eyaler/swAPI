@@ -7,7 +7,7 @@ const indexDeltaY = 35
 const animationRate = 0.01
 const delayRate = 0.01
 const realignWeight = 0.99
-const fgColors = ['white', 'black', 'silver']
+const fgColors = ['white', 'black', 'red', 'orange', 'silver']
 const bgColors = [[100, 150, 250], [250, 100, 150], [150, 250, 100], [250, 100, 250]]
 let boxHeight
 let boxes
