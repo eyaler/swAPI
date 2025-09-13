@@ -47,6 +47,8 @@ function drawBoxes() {
 			secondBox.lastY = firstBox.lastY
 			firstBox.lastX = saveX
 			firstBox.lastY = saveY	
+			firstBox.z = 1
+			secondBox.z = 2
 			if (kOrMode === true || kOrMode == 'swap') {
 				;[boxes[i], boxes[j]] = [boxes[j], boxes[i]]
 				;[values[i], values[j]] = [values[j], values[i]]
@@ -65,8 +67,7 @@ function drawBoxes() {
 	fill('black')
 	for (let i = 0; i < boxes.length; i++)
 		text(i, boxWidth * (marginFrac+0.5+i*(1+marginFrac)) * width, (rowHeight+boxHeight/2)*height + indexDeltaY)
-	for (let i = boxes.length - 1; i >= 0; i--)
-		drawBox(boxes[i])
+	boxes.toSorted((a, b) => a.z - b.z).forEach(drawBox)
 
 	if (isAnimating) {
 		animationProgress += animationProgress < 0 ? delayRate : animationRate
@@ -92,6 +93,7 @@ function drawBoxes() {
 		})
 		if (!isAnimating) {
 		  firstBox.passive = false
+			firstBox.z = secondBox.z = 0
 			secondBox = null
 			firstBox = null
 			thirdBox = null
@@ -145,6 +147,7 @@ function setupBoxes(numbers) {
 		boxes[i].color = fgColors[counter[val] % fgColors.length]
 		boxes[i].x = boxes[i].lastX = boxWidth * (marginFrac+i*(1+marginFrac))
 		boxes[i].y = boxes[i].lastY = rowHeight - boxHeight/2
+		boxes[i].z = 0
 	})
 }
 
