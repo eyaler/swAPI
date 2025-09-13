@@ -1,9 +1,9 @@
 # swAPI
 ### A p5.js library for visualizing sorting algorithms
 
-Demo: https://openprocessing.org/sketch/2716521
+Editable demo: https://openprocessing.org/sketch/2716521
 
-Interactive: https://openprocessing.org/sketch/2330796
+Interactive web app: https://openprocessing.org/sketch/2330796
 
 <br>
 
