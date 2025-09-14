@@ -136,7 +136,7 @@ function mySort(numbers) {
 		}
 		if (j)
 			animateBoxes(j - 1, i, false)
-		if (i > j) {
+		if (j < i) {
 			numbers[j] = current
 			animateBoxes(j, i, 'before')
 		}
