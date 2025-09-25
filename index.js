@@ -21,7 +21,7 @@ let thirdBox
 let animationProgress
 let animationFinish
 let isAnimating
-let maxDigits
+let maxChars
 let values
 let queue
 
@@ -127,7 +127,7 @@ function drawBox(box) {
 
 	noStroke()
 	fill(box.color)
-	textSize(min(30, ww * 0.8 * 2 / maxDigits))
+	textSize(min(30, ww * 0.8 * 2 / maxChars))
 	text(box.value, xw + ww/2, yh + hh/2)
 }
 
@@ -138,7 +138,7 @@ function setupBoxes(numbers) {
 	queue = []
 	boxes = []
 	const counter = {}
-	maxDigits = max(2, ...values.map(i => i.toString().length))
+	maxChars = max(2, ...values.map(i => i.toString().length))
 	boxWidth = 1 / ((values.length+2*marginFrac)+(values.length-1)*marginFrac)
 	boxHeight = min(maxBoxHeightFrac, maxBoxHeight / height)
 	values.forEach((val, i) => {
