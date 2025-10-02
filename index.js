@@ -12,6 +12,7 @@ const initialDelay = 1
 const realignWeight = 0.99
 const fgColors = ['white', 'black', 'red', 'orange', 'silver']
 const bgColors = [[100, 150, 250], [150, 250, 100], [250, 100, 150], [250, 100, 250]]
+
 let boxWidth
 let boxHeight
 let boxes
