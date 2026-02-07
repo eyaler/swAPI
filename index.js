@@ -68,7 +68,7 @@ function drawBoxes() {
 	fill('black')
 	for (let i = 0; i < boxes.length; i++)
 		text(i, boxWidth * (marginFrac+0.5+i*(1+marginFrac)) * width, (rowHeight+boxHeight/2)*height + indexDeltaY)
-	boxes.toSorted((a, b) => a.z - b.z).forEach(drawBox)
+	;[...boxes].sort((a, b) => a.z - b.z).forEach(drawBox)
 
 	if (isAnimating) {
 		animationProgress += animationProgress < 0 ? delayRate : animationRate
